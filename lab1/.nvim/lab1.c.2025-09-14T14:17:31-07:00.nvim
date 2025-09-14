@@ -1,0 +1,36 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+  char *str, *token;
+  char *delim = " \t";
+  char *line = NULL;
+  char *saveptr;
+  size_t len = 0;
+  ssize_t nread;
+  int i;
+  printf("Please enter a string: ");
+  fflush(stdout);
+
+  nread = getline(&line, &len, stdin);
+  if (nread != -1) {
+    if (line[nread - 1] == '\n') {
+      line[nread - 1] = '\0';
+    }
+  } else {
+    perror("getline failed");
+    exit(EXIT_FAILURE);
+  }
+  for (i = 1, str = line;; i++, str = NULL) {
+    token = strtok_r(str, delim, &saveptr);
+    if (token == NULL)
+      break;
+    printf("%s\n", token);
+  }
+  free(line);
+  return 0;
+
+  exit(EXIT_SUCCESS);
+}

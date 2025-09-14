@@ -1,0 +1,38 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+  char *str, *token;
+  char *delim = " \t";
+  char *line = NULL;
+  char *saveptr;
+  size_t len = 0;
+  ssize_t nread;
+
+  printf("Please enter a string: ");
+  fflush(stdout);
+
+  nread = getline(&line, &len, stdin);
+
+  if (nread < 1) {
+    printf("Failed to read input.\n");
+    free(line);
+    exit(EXIT_FAILURE);
+  }
+
+  if (line[nread - 1] == '\n') {
+    line[nread - 1] = '\0';
+  }
+
+  for (str = line;; str = NULL) {
+    token = strtok_r(str, delim, &saveptr);
+    if (token == NULL)
+      break;
+    printf("%s\n", token);
+  }
+
+  free(line);
+  return 0;
+}

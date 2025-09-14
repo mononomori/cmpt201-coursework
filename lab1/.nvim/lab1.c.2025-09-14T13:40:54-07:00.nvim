@@ -1,0 +1,33 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// use get line to get the string
+// have get line parse the string and when user presses enter it sends to
+// strtok_r obviously use a space as the delimiter feed the input of getline
+// into strtok_r save the output of strtok_r as tokens print tokens
+
+int main(int argc, char *argv[]) {
+  // print Please input some text and then press enter
+  // getline the text entered
+  // for (j = 1, str = argument(aka user text); ; increment until the str is
+  // null (the end) token = strtok_r(str1, argv[2], &saveptr1); if (token ==
+  // NULL) break; printf(token);
+  char *str, *token;
+  char *saveptr;
+  int i;
+  if (argc != 3) {
+    fprintf(stderr, "Usage: %s string delim\n", argv[0]);
+    exit(EXIT_FAILURE);
+  }
+
+  for (i = 1, str = argv[1];; i++, str = NULL) {
+    token = strtok_r(str, argv[2], &saveptr);
+    if (token == NULL)
+      break;
+    printf("%s\n", token);
+  }
+
+  exit(EXIT_SUCCESS);
+}
