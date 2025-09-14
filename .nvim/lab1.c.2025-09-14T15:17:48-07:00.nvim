@@ -11,7 +11,7 @@ int main() {
   size_t len = 0;
   ssize_t nread;
 
-  printf("Please enter a string:\n");
+  printf("Please enter a string: ");
   fflush(stdout);
 
   nread = getline(&line, &len, stdin);
@@ -26,12 +26,17 @@ int main() {
     line[nread - 1] = '\0';
   }
 
-  for (str = line;; str = NULL) {
-    token = strtok_r(str, delim, &saveptr);
-    if (token == NULL)
-      break;
+  token = strtok_r(line, delim, &saveptr);
+  while (token != NULL) {
     printf("%s\n", token);
+    token = strtok_r(NULL, delim, &saveptr);
   }
+//  for (str = line;; str = NULL) {
+//    token = strtok_r(str, delim, &saveptr);
+//    if (token == NULL)
+//      break;
+//    printf("%s\n", token);
+//  }
 
   free(line);
   return 0;

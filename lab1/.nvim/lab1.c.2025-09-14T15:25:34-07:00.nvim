@@ -11,7 +11,7 @@ int main() {
   size_t len = 0;
   ssize_t nread;
 
-  printf("Please enter a string:\n");
+  printf("Please enter a string: ");
   fflush(stdout);
 
   nread = getline(&line, &len, stdin);
