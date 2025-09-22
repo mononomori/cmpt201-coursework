@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdbool.h>
+// print("enter path to program to run)
+// getline(user input)
+// regex \n away
+// fork and exec
+// waitpid(process until it's finished)
+// repeat
+//

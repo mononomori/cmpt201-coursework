@@ -1,0 +1,19 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+int main(void) {
+  while(true) {
+  printf("Please Enter program path you wish to run.\n> ");
+  fflush(stdout);
+  }
+  return 0;
+}
+// print("enter path to program to run)
+// getline(user input)
+// regex \n away
+// fork and exec
+// waitpid(process until it's finished)
+// repeat
+//
