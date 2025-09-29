@@ -1,0 +1,113 @@
+#define _POSIX_C_SOURCE 200809L
+#include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_SIZE 5
+
+// Add input to the queue
+void add_to_queue(char *queue[], int *size, char *str) {
+  assert(str != NULL);
+  assert(*size >= 0 && *size <= MAX_SIZE);
+
+  if (*size == MAX_SIZE) {
+    free(queue[0]);
+    for (int i = 0; i < MAX_SIZE - 1; i++) {
+      queue[i] = queue[i + 1];
+    }
+    (*size)--;
+  }
+  queue[(*size)++] = strdup(str);
+}
+
+// Print all items in the queue
+void print_queue(char *queue[], int size) {
+  assert(size >= 0 && size <= MAX_SIZE);
+
+  for (int i = 0; i < size; i++) {
+    assert(queue[i] != NULL);
+    printf("%s\n", queue[i]);
+  }
+}
+
+// Clear all items from the queue
+void clear_queue(char *queue[], int *size) {
+  for (int i = 0; i < *size; i++) {
+    free(queue[i]);
+    queue[i] = NULL;
+  }
+  *size = 0;
+}
+
+bool is_blank(char *str) {
+  if (str == NULL || *str == '\0') {
+    return true;
+  }
+
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (str[i] != ' ' && str[i] != '\t') {
+      return false;
+    }
+  }
+  return true;
+}
+
+void process_line(char *line, char *queue[], int *size) {
+
+  if (is_blank(line)) {
+    return;
+  }
+
+  add_to_queue(queue, size, line);
+
+  if (strcmp(line, "print") == 0) {
+    print_queue(queue, *size);
+  } else if (strcmp(line, "clear") == 0) {
+    clear_queue(queue, size);
+  }
+}
+
+void get_input(char *queue[], int *size) {
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t nread;
+
+  printf("Enter Input: ");
+
+  while ((nread = getline(&line, &len, stdin)) != -1) {
+    assert(nread > 0);
+
+    if (line[nread - 1] == '\n') {
+      line[nread - 1] = '\0';
+    }
+
+    process_line(line, queue, size);
+    printf("Enter Input: ");
+  }
+
+  free(line);
+}
+
+// Clean up all dynamically allocated strings in queue
+void cleanup_queue(char *queue[], int size) {
+  for (int i = 0; i < size; i++) {
+    if (queue[i] != NULL) {
+      free(queue[i]);
+    }
+  }
+}
+
+int main() {
+  char *queue[MAX_SIZE] = {NULL};
+  int size = 0;
+
+  // Get and process user input
+  get_input(queue, &size);
+
+  // Clean up
+  cleanup_queue(queue, size);
+
+  return 0;
+}

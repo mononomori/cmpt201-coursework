@@ -1,0 +1,56 @@
+#define _POSIX_C_SOURCE 200809L
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_SIZE 5
+
+char *queue[MAX_SIZE];
+int size = 0;
+
+void get_input(char *str) {
+  assert(str != NULL);
+  assert(size >= 0 && size <= MAX_SIZE);
+
+  if (size == MAX_SIZE) {
+    free(queue[0]);
+    for (int i = 0; i < MAX_SIZE - 1; i++) {
+      queue[i] = queue[i + 1];
+    }
+    size--;
+  }
+  queue[size++] = strdup(str);
+}
+
+void print_inputs() {
+  for (int i = 0; i < size; i++) {
+    printf("%s\n", queue[i]);
+  }
+}
+
+int main() {
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t nread;
+  printf("Enter Input: ");
+
+  while ((nread = getline(&line, &len, stdin)) != -1) {
+    if (line[nread - 1] == '\n') {
+      line[nread - 1] = '\0';
+    }
+    if (strcmp(line, "print") == 0) {
+      print_inputs();
+    } else {
+      get_input(line);
+    }
+    printf("Enter Input: ");
+  }
+
+  free(line);
+  for (int i = 0; i < size; i++) {
+    free(queue[i]);
+  }
+
+  return 0;
+}
