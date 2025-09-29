@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include<stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
+void handler(int signo, siginfo_t *info, void *context)
+{
+
+  struct sigaction oldact;
+  if (sigaction(SIGSEGV, NULL< &oldact) == -1 || (oldact.sa_flags & SA_UNSUPPORTED) ||
+      !(oldact.sa_flags & SA_EXPOSE_TAGBITS))
+  {
+    _exit(EXIT_FAILURE);
+  }
+  _exit(EXIT_SUCCESS);
+}
+int main(void) {
+
+  struct sigaction act = { 0 };
+
+  act.sa_sigaction = &handler;
+
+  if (sigaction(SIGINT, &act, NULL) == -1) {
+
+    perror("sigaction");
+    exit(EXIT_FAILURE);
+  }
+
+  write(STDOUT_FILENO, "CTRL-C pressed");
+
+  while (1) {
+    sleep(1);
+  };
+  return 0;
+
+}

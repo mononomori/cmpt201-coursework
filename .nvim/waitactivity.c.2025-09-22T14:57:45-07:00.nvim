@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main(void) {
+
+  pid_t pid;
+  int status;
+
+  pid = fork();
+
+  if (pid > 0) {
+    execl("/usr/bin/ls", "/usr/bin/ls", "-a", "-l", (char *)NULL);
+    waitpid(pid, &status, 0);
+  }
+  return 0;
+}
