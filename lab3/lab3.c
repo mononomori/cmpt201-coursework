@@ -18,9 +18,9 @@ void add_to_queue(char *str);
 void print_queue();
 void clear_queue();
 
-// We don't really have a way to terminate the program and make sure memory is
-// freed Assuming user terminates with CTRL+C, I wanted to make sure memory is
-// cleared, hence the handler and calling clear_queue()
+// We don't really have a way to safely terminate the program
+// Assuming user terminates with CTRL+C, I wanted to make sure memory is cleared
+// Hence the handler calling clear_queue()
 void handle_sigint(int sig) {
   (void)sig;
   printf("\n");
